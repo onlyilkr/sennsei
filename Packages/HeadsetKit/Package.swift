@@ -16,7 +16,7 @@ let package = Package(
         .executable(name: "sennsei", targets: ["SennseiCLI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/sindresorhus/KeyboardShortcuts", exact: "2.4.0"),
+        .package(url: "https://github.com/sindresorhus/KeyboardShortcuts", exact: "3.1.0"),
     ],
     targets: [
         .target(name: "GaiaProtocol"),
