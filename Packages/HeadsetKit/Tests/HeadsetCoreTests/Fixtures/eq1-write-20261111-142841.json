@@ -1,0 +1,87 @@
+{
+  "after" : {
+    "bassBoost" : false,
+    "filterTypes" : [
+      4,
+      272,
+      11,
+      288,
+      11,
+      304,
+      11,
+      320,
+      11
+    ],
+    "firmware" : "3.12.14",
+    "gainResponse" : [
+      5,
+      257,
+      0,
+      274,
+      0,
+      290,
+      0,
+      306,
+      0,
+      322,
+      0
+    ],
+    "gains" : [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "isUnconfigured" : false,
+    "knobY" : 16384,
+    "levelShiftX10" : 0
+  },
+  "before" : {
+    "bassBoost" : false,
+    "filterTypes" : [
+      4,
+      272,
+      11,
+      288,
+      11,
+      304,
+      11,
+      320,
+      11
+    ],
+    "firmware" : "3.12.14",
+    "gainResponse" : [
+      5,
+      257,
+      0,
+      274,
+      0,
+      290,
+      0,
+      306,
+      0,
+      322,
+      0
+    ],
+    "gains" : [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "isUnconfigured" : false,
+    "knobY" : 16384,
+    "levelShiftX10" : 0
+  },
+  "firmware" : "3.12.14",
+  "requestedBassBoost" : false,
+  "requestedGains" : [
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

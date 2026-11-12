@@ -1,0 +1,70 @@
+name: Bug report
+description: Something went wrong or behaved unexpectedly
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Sennsei talks to the headphones over an undocumented protocol, so the versions below matter.
+        Output and logs can contain your macOS user name, device names and Bluetooth addresses: replace them with `USER`, `Headphones` and `XX:XX:XX:XX:XX:XX` before pasting.
+        If you found a security problem, do not file it here: use the Security advisories link on the issue chooser.
+  - type: input
+    id: version
+    attributes:
+      label: Sennsei version
+      description: Output of `sennsei --version`, or Get Info on the app in Finder.
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: "26.1"
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Installed with
+      options:
+        - Homebrew
+        - Release zip
+        - Built from source
+    validations:
+      required: true
+  - type: input
+    id: headphones
+    attributes:
+      label: Headphone model and firmware version
+      description: "The firmware version is in the Sennheiser Smart Control app."
+      placeholder: "ACCENTUM Plus, firmware 1.2.3"
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of `sennsei doctor`
+      description: Run it in Terminal with Sennsei open. If the command is not found, say how you installed Sennsei.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: What you did
+      placeholder: "Switched to Transparency in the panel while music was playing..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Include any message the panel showed.
+    validations:
+      required: true

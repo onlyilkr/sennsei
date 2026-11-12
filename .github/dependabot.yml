@@ -1,0 +1,12 @@
+version: 2
+updates:
+  # Actions are pinned to commit SHAs; Dependabot bumps the SHA and the version comment together.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  # SwiftPM dependencies are pinned (exact version in Package.swift, Package.resolved is committed).
+  - package-ecosystem: swift
+    directory: /Packages/HeadsetKit
+    schedule:
+      interval: weekly

@@ -1,0 +1,50 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: swift --version
+      - name: Unit tests, app bundle and command line smoke test
+        # make check = swift test (once), then builds the app and the sennsei tool (host architecture)
+        # and runs the tool without the app: --help, --version, status (exit 3, app not running),
+        # noise loud (exit 2, usage error).
+        run: make check
+      - name: Documentation checks
+        # README covers every command and exit code of build/sennsei --help, relative links resolve,
+        # no forbidden strings. Needs the build/sennsei that make check just produced.
+        run: make docs
+  release-dry-run:
+    # Builds the release exactly as the tag workflow does, without publishing, so
+    # packaging and the cask template are checked before a tag is pushed.
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: scripts/package-release.sh 0.0.0-ci
+      - name: Archive checks
+        run: |
+          cd dist
+          shasum -a 256 -c checksums.txt
+          ditto -x -k Sennsei-0.0.0-ci.zip extracted
+          app="extracted/Sennsei.app"
+          codesign --verify --deep --strict "$app"
+          plutil -extract CFBundleShortVersionString raw "$app/Contents/Info.plist" | grep -qx 0.0.0-ci
+          test -s "$app/Contents/Resources/Metadata.appintents/extract.actionsdata"
+          # Both architectures, for the app and for the tool inside it.
+          for bin in "$app/Contents/MacOS/SennseiApp" "$app/Contents/Resources/sennsei"; do
+            archs=$(lipo -archs "$bin")
+            [[ "$archs" == *arm64* && "$archs" == *x86_64* ]] || { echo "not universal: $bin $archs"; exit 1; }
+          done
+          ruby -c sennsei.rb
