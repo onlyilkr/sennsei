@@ -13,8 +13,6 @@
 brew install --cask onlyilkr/tap/sennsei
 ```
 
-<sub>Available once the first release is published; until then see [Install](#install).</sub>
-
 > [!IMPORTANT]
 > **Unofficial. Not affiliated with, endorsed by or supported by Sennheiser or Sonova.** The Sennheiser and
 > ACCENTUM names are used only to identify the compatible product. The icon and logo are original.
@@ -93,7 +91,7 @@ macOS grants the Bluetooth permission to an app, not to a shell.
 
 Sennsei needs **macOS 14 (Sonoma) or later**. It has been verified only on macOS 26 on Apple silicon.
 
-**Homebrew** (becomes available with the first release; it is not published yet):
+**Homebrew**:
 
 ```sh
 brew install --cask onlyilkr/tap/sennsei
