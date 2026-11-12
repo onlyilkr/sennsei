@@ -1,11 +1,12 @@
 import Foundation
+import HeadsetCore
 
 /// Polls `condition` until it is true or `timeout` passes, suspending (never blocking) between checks.
 /// Returns whether the condition held. `sleep` is injectable so tests need no real time.
 @MainActor
 public func waitUntil(
     timeout: Duration, interval: Duration = .milliseconds(100),
-    sleep: (Duration) async -> Void = { try? await Task.sleep(for: $0) },
+    sleep: (Duration) async -> Void = { try? await Pause.sleep($0) },
     condition: () -> Bool
 ) async -> Bool {
     var remaining = timeout

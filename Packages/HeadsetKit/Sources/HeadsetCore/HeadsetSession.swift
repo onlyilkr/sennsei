@@ -415,7 +415,7 @@ public actor HeadsetSession {
                 let id = nextWaiterID
                 let timeout = replyTimeout
                 let timer = Task { [weak self] in
-                    try? await Task.sleep(for: timeout)
+                    try? await Pause.sleep(timeout)
                     await self?.expire(id)
                 }
                 waiter = Waiter(id: id, continuation: continuation, timer: timer)
@@ -438,7 +438,7 @@ public actor HeadsetSession {
             // A late answer to this request arrives with nothing expecting it and is ignored; the
             // next request (queued on the lock) cannot be sent, so cannot be answered by it, until
             // the window is over. That held lock plus `expecting == nil` is the whole protection.
-            try? await Task.sleep(for: replyTimeout)
+            try? await Pause.sleep(replyTimeout)
             throw .timeout(name)
         case .closed:
             await teardown()

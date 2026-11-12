@@ -159,7 +159,7 @@ public final class RFCOMMTransport: NSObject, HeadsetTransport {
             let start = device.performSDPQuery(self)
             if start != kIOReturnSuccess { finishSDP(start); return }
             sdpTimer = Task { [weak self] in
-                try? await Task.sleep(for: Self.sdpTimeout)
+                try? await Pause.sleep(Self.sdpTimeout)
                 guard !Task.isCancelled else { return }
                 self?.finishSDP(kIOReturnTimeout)
             }
@@ -206,7 +206,7 @@ public final class RFCOMMTransport: NSObject, HeadsetTransport {
         return try await withCheckedThrowingContinuation { cont in
             openContinuation = cont
             openTimer = Task { [weak self] in
-                try? await Task.sleep(for: Self.openTimeout)
+                try? await Pause.sleep(Self.openTimeout)
                 guard !Task.isCancelled else { return }
                 self?.finishOpen(.failure(TransportError.openTimedOut))
             }

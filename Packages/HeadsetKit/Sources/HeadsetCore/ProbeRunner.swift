@@ -122,9 +122,9 @@ public struct ProbeRunner: Sendable {
                 $0.vendor == frame.vendor && $0.baseCommand == frame.command && ($0.kind == .response || $0.kind == .error)
             }
             if reply != nil || clock.now >= deadline { break }
-            try await Task.sleep(for: .milliseconds(5))
+            try await Pause.sleep(.milliseconds(5))
         }
-        if gap > .zero { try await Task.sleep(for: gap) }
+        if gap > .zero { try await Pause.sleep(gap) }
         received += await mailbox.drain()
 
         let elapsed = clock.now - start
