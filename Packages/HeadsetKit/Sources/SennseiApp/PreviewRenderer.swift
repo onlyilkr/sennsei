@@ -73,7 +73,9 @@ enum PreviewRenderer {
         try write(window(panel, cornerRadius: 14), named: "panel.png", in: directory)
         try write(window(insights.frame(width: 520), cornerRadius: 14), named: "insights.png", in: directory)
         try write(window(shortcuts, cornerRadius: 14), named: "shortcuts.png", in: directory)
-        try write(SocialPreview(panel: panel), named: "social-preview.png", in: directory, scale: 1)
+        let hero = HeroImage(panel: panel, insights: insights.frame(width: 520))
+        try write(hero, named: "hero.png", in: directory, scale: 2, opaque: true)
+        try write(hero, named: "social-preview.png", in: directory, scale: 0.8, opaque: true)
     }
 
     /// A context that is never used to read anything: the view is given its state directly.
@@ -98,48 +100,73 @@ enum PreviewRenderer {
             .padding(28)
     }
 
-    private static func write<V: View>(_ view: V, named name: String, in directory: URL, scale: CGFloat = 2) throws {
+    private static func write<V: View>(_ view: V, named name: String, in directory: URL, scale: CGFloat = 2, opaque: Bool = false) throws {
         let renderer = ImageRenderer(content: view)
         renderer.scale = scale
         guard let image = renderer.cgImage else { throw RenderError.render("\(name): no image") }
-        try PNGWriter.write(image, to: directory.appendingPathComponent(name))
+        try PNGWriter.write(image, to: directory.appendingPathComponent(name), opaque: opaque)
     }
 }
 
-/// 1280x640 card for the repository's social preview: mark, name, tagline and the panel.
-private struct SocialPreview: View {
-    let panel: MenuPanel
+/// The repository's hero image (1600x800 points; README at 2x, GitHub social preview at 0.8x): mark, name,
+/// tagline and feature lines on the left, the Insights window (top part) behind and the panel in front.
+private struct HeroImage<Panel: View, Insights: View>: View {
+    let panel: Panel
+    let insights: Insights
+
+    private let graphite = Color(red: 0x0E / 255, green: 0x0F / 255, blue: 0x11 / 255)
 
     var body: some View {
-        ZStack {
-            Color(red: 0x0E / 255, green: 0x0F / 255, blue: 0x11 / 255)
+        ZStack(alignment: .topLeading) {
+            graphite
             RadialGradient(
-                colors: [Palette.amber.opacity(0.20), .clear], center: UnitPoint(x: 0.82, y: 0.5),
-                startRadius: 10, endRadius: 520)
-            HStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: 22) {
-                    AppMark(size: 132)
-                    Text("Sennsei")
-                        .font(.system(size: 84, weight: .bold, design: .rounded))
-                        .foregroundStyle(Palette.textPrimary)
-                    Text("Headphone control,\nright in the menu bar.")
-                        .font(.system(size: 36, weight: .regular))
-                        .foregroundStyle(Palette.textSecondary)
-                        .lineSpacing(4)
+                colors: [Palette.amber.opacity(0.20), .clear], center: UnitPoint(x: 0.74, y: 0.5),
+                startRadius: 10, endRadius: 640)
+            VStack(alignment: .leading, spacing: 20) {
+                AppMark(size: 120)
+                Text("Sennsei")
+                    .font(.system(size: 78, weight: .bold, design: .rounded))
+                    .foregroundStyle(Palette.textPrimary)
+                Text("Headphone control,\nright in the menu bar.")
+                    .font(.system(size: 32, weight: .regular))
+                    .foregroundStyle(Palette.textSecondary)
+                    .lineSpacing(3)
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(["Noise control · Equalizer · Scenes", "CLI · Shortcuts · Hotkeys", "Local listening stats"], id: \.self) { line in
+                        Text(line)
+                            .font(.system(size: 20, weight: .medium))
+                            .foregroundStyle(Palette.textPrimary)
+                            .padding(.horizontal, 14).padding(.vertical, 7)
+                            .background(Color.white.opacity(0.07), in: Capsule())
+                            .overlay(Capsule().strokeBorder(Color.white.opacity(0.10)))
+                    }
                 }
-                .padding(.leading, 96)
-                Spacer(minLength: 0)
-                panel
-                    .fixedSize()
-                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Color.white.opacity(0.12), lineWidth: 1))
-                    .shadow(color: .black.opacity(0.5), radius: 24, y: 10)
-                    .scaleEffect(1.12)
-                    .padding(.trailing, 130)
+                .padding(.top, 4)
             }
+            .padding(.leading, 80)
+            .padding(.top, 96)
+
+            // Insights: only the top part (header, totals, by-app chart, noise share), behind the panel.
+            insights
+                .fixedSize()
+                .frame(width: 520, height: 755, alignment: .top)
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(Color.white.opacity(0.10), lineWidth: 1))
+                .shadow(color: .black.opacity(0.5), radius: 22, y: 10)
+                .scaleEffect(0.94, anchor: .topLeading)
+                .offset(x: 987, y: 44)
+            panel
+                .fixedSize()
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Color.white.opacity(0.12), lineWidth: 1))
+                .shadow(color: .black.opacity(0.6), radius: 28, y: 14)
+                .scaleEffect(1.06, anchor: .topLeading)
+                .offset(x: 668, y: 236)
         }
-        .frame(width: 1280, height: 640)
+        .frame(width: 1600, height: 800, alignment: .topLeading)
         .clipped()
+        .environment(\.colorScheme, .dark)
     }
 }
 
@@ -160,11 +187,12 @@ private struct AppMark: View {
 
 /// Writes a PNG with no metadata beyond the standard sRGB profile.
 enum PNGWriter {
-    static func write(_ image: CGImage, to url: URL) throws {
+    /// `opaque` drops the alpha channel (smaller file) for images that fill their whole canvas.
+    static func write(_ image: CGImage, to url: URL, opaque: Bool = false) throws {
         let space = CGColorSpace(name: CGColorSpace.sRGB)!
         guard let context = CGContext(
             data: nil, width: image.width, height: image.height, bitsPerComponent: 8, bytesPerRow: 0, space: space,
-            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { throw PreviewRenderer.RenderError.render("bitmap context") }
+            bitmapInfo: (opaque ? CGImageAlphaInfo.noneSkipLast : CGImageAlphaInfo.premultipliedLast).rawValue) else { throw PreviewRenderer.RenderError.render("bitmap context") }
         context.draw(image, in: CGRect(x: 0, y: 0, width: image.width, height: image.height))
         guard let flat = context.makeImage(),
               let destination = CGImageDestinationCreateWithURL(url as CFURL, UTType.png.identifier as CFString, 1, nil)

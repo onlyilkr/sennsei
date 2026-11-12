@@ -31,7 +31,7 @@ brew install --cask onlyilkr/tap/sennsei
 > (see [Credits](#credits)), and contains no code, files or data from the official app.
 
 <p align="center">
-  <img src="docs/images/panel.png" width="360" alt="The Sennsei panel under the menu bar icon: connected, battery 80 percent; noise control with ANC selected and a switch to pause music in Transparency; three scenes, Focus, Meeting and Travel, with Focus active, and the automatic scenes switch off; equalizer presets Rock, Pop, Dance, Hip-Hop, Classical, Movie, Jazz and Flat with Flat selected; buttons for Shortcuts, Insights and Quit.">
+  <img src="docs/images/hero.png" width="100%" alt="Sennsei: the menu bar panel in front of the Insights window. The panel shows the headphones connected at 80 percent battery with noise control, scenes and equalizer presets; behind it Insights shows 20 hours 30 minutes of listening and 35 minutes of calls in a week, listening per app and the noise control share. Beside them: the Sennsei icon and the line Headphone control, right in the menu bar.">
 </p>
 
 <sub>The images in this README are generated from sample data (`make preview`). The switch, segmented picker
@@ -152,6 +152,10 @@ Renamed headphones, or none at hand? See *The headphones have another name* and 
 ## The panel
 
 Click the menu bar icon.
+
+<p align="center">
+  <img src="docs/images/panel.png" width="360" alt="The Sennsei panel under the menu bar icon: connected, battery 80 percent; noise control with ANC selected and a switch to pause music in Transparency; three scenes, Focus, Meeting and Travel, with Focus active, and the automatic scenes switch off; equalizer presets Rock, Pop, Dance, Hip-Hop, Classical, Movie, Jazz and Flat with Flat selected; buttons for Shortcuts, Insights and Quit.">
+</p>
 
 - **Header**: connection state and battery.
 - **Noise control**: ANC, Transparency, Off, and the *Pause music in Transparency* switch (the headphones'

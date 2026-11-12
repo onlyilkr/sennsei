@@ -38,7 +38,7 @@ preview:
 	swift build --package-path $(PKG) -c release --product SennseiApp
 	mkdir -p build/preview docs/images
 	$(shell swift build --package-path $(PKG) -c release --show-bin-path)/SennseiApp --render-previews build/preview -AppleLanguages "(en)" -AppleLocale en_US
-	cp build/preview/panel.png build/preview/insights.png build/preview/shortcuts.png build/preview/social-preview.png docs/images/
+	cp build/preview/hero.png build/preview/panel.png build/preview/insights.png build/preview/shortcuts.png build/preview/social-preview.png docs/images/
 
 clean:
 	rm -rf .build $(PKG)/.build build dist
