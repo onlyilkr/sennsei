@@ -5,6 +5,17 @@ All notable changes to Sennsei are listed here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Updated KeyboardShortcuts to 3.1.0.
+
+### Fixed
+
+- A crash class at the first sleep in the release build: generic `Task.sleep(for:)` specializations from our
+  modules and from a dependency built with other language features were merged by the linker with different
+  async context sizes. Waiting now goes through a non-generic `Pause.sleep`, and the build fails
+  (`scripts/check-async-odr.py`) if such a mismatch reappears.
+
 ## [0.1.0] - 2026-11-12
 
 First public release.

@@ -87,6 +87,9 @@ can send the audio mode command (`0803`), and are maintainer-only. Do **not** se
 - **Swift 6 language mode, strict concurrency, no warnings.** UI and model state on the main actor, the
   session as an actor, no blocking on the main actor, and no `NSApp.terminate` from inside a main-actor task
   (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#quitting)).
+- **Wait with `Pause.sleep`, never `Task.sleep(for:)`.** The generic stdlib call can clash with a dependency
+  at link time and crash the app (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#why-the-code-never-calls-tasksleepfor)).
+  `make check` runs an ODR guard (`scripts/check-async-odr.py`) that fails on such mismatches.
 - The app makes no network requests and runs no shell commands; a change that adds either needs a very good
   reason and a note in [SECURITY.md](SECURITY.md).
 
