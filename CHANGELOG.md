@@ -5,6 +5,8 @@ All notable changes to Sennsei are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-12
+
 ### Changed
 
 - Updated KeyboardShortcuts to 3.1.0.
