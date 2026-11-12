@@ -182,7 +182,7 @@ editor yet.
 | --- | --- |
 | below 2.12.0 | not available |
 | 2.12.0 up to, not including, 3.16.4 | works ("Gen1"; verified on 3.12.14) |
-| 3.16.4 and later | **not implemented**: see the Gen2 equalizer issue in the [issue tracker](https://github.com/onlyilkr/sennsei/issues) |
+| 3.16.4 and later | **not implemented**: see the Gen2 equalizer [issue #1](https://github.com/onlyilkr/sennsei/issues/1) |
 
 The Gen1 equalizer encoding follows protocol facts from the unlicensed xndbogdan/sennheiser-control notes (facts
 only, no code or data copied) and was verified on an ACCENTUM Wireless SE by reading the settings back from the
@@ -407,8 +407,8 @@ Verified on a single pair of headphones means exactly that: other firmware versi
 
 ## Limitations
 
-- **Gen2 equalizer** (firmware 3.16.4 and later) cannot be written yet; see the Gen2 equalizer issue in the
-  [issue tracker](https://github.com/onlyilkr/sennsei/issues).
+- **Gen2 equalizer** (firmware 3.16.4 and later) cannot be written yet; see the Gen2 equalizer
+  [issue #1](https://github.com/onlyilkr/sennsei/issues/1).
 - **Ad-hoc signing, not notarized**: the first launch needs right-click Open, and the Bluetooth permission is
   asked again after every update.
 - **Intel is untested**: the x86_64 slice is built, nothing more is known.
