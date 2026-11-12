@@ -73,7 +73,7 @@ struct InsightsView: View {
         .task(id: range) {
             while !Task.isCancelled {
                 reload()
-                try? await Task.sleep(for: .seconds(10))
+                try? await Pause.sleep(.seconds(10))
             }
         }
         .onDisappear { loader.cancel() }

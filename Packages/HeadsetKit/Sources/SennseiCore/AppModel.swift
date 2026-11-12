@@ -497,7 +497,7 @@ public final class AppModel {
         let epoch = manualEpoch   // a manual action during the debounce window wins over this change
         debounceTask = Task { [weak self] in
             await previous?.value
-            guard (try? await Task.sleep(for: delay)) != nil, !Task.isCancelled else { return }
+            guard (try? await Pause.sleep(delay)) != nil, !Task.isCancelled else { return }
             await self?.decideAutomatically(frontApp: app, epoch: epoch)
         }
     }
@@ -554,7 +554,7 @@ public final class AppModel {
         pollTask = Task { [weak self] in
             var failures = 0
             while !Task.isCancelled {
-                try? await Task.sleep(for: interval)
+                try? await Pause.sleep(interval)
                 if Task.isCancelled { return }
                 do {
                     let refreshed = try await session.refreshStatus()

@@ -196,3 +196,13 @@ synchronously from an event handler.
 - Anything that waits (a reply, a timer, a poll) suspends; the main actor is never blocked on hardware.
 - Pure logic (frames, catalog, scenes engine, recorder, CSV) is kept free of I/O so tests need no hardware
   and run on any Mac.
+
+### Why the code never calls `Task.sleep(for:)`
+
+`Task.sleep(for:)` and `Clock.sleep` are generic, so each module that calls them emits its own weak copy and
+the linker keeps one. A dependency compiled with other language features (KeyboardShortcuts 3.1.0 does this)
+can emit a copy with a different async context size, and the linked app then aborts at the first sleep. Our
+modules therefore wait through `Pause.sleep` (`HeadsetCore/Pause.swift`), which calls the non-generic
+`Task.sleep(nanoseconds:)`; a test rejects the generic calls in the sources, and
+`scripts/check-async-odr.py` runs after every release build in `Tools/app/build_app.sh` and fails the build
+when any shared async specialization has diverging sizes.

@@ -34,6 +34,10 @@ build_for() { # $1 = extra swift build flags (e.g. --arch arm64), possibly empty
         -Xswiftc -Xfrontend -Xswiftc "$intents_work/protocols.json"
     # shellcheck disable=SC2086
     swift build --package-path "$pkg" -c release --product sennsei $1
+    # Fail on weak async specializations that modules (ours and dependencies) define with different
+    # context sizes; the linker would mix them and the app would abort at run time. See docs/ARCHITECTURE.md.
+    # shellcheck disable=SC2086
+    python3 "$root/scripts/check-async-odr.py" "$(swift build --package-path "$pkg" -c release --show-bin-path $1)"
 }
 
 if [ "${UNIVERSAL:-}" = 1 ]; then

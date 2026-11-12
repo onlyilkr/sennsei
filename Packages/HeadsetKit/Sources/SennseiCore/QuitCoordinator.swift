@@ -1,4 +1,5 @@
 import Foundation
+import HeadsetCore
 import os
 
 /// Runs the quit-time work once: stop the control socket, flush Insights (bounded), stop the headset model
@@ -49,7 +50,7 @@ public final class QuitCoordinator {
 
     public init(
         insights: InsightsService?, timeout: Duration = .seconds(3),
-        sleep: @escaping @Sendable (Duration) async -> Void = { duration in _ = try? await Task.sleep(for: duration) },
+        sleep: @escaping @Sendable (Duration) async -> Void = { duration in _ = try? await Pause.sleep(duration) },
         schedule: @escaping Scheduler = QuitCoordinator.runLoopTimer,
         stopControl: @escaping @MainActor () -> Void,
         stopModel: @escaping @MainActor () async -> Void = {}

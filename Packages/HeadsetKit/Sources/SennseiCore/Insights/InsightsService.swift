@@ -75,7 +75,7 @@ public final class InsightsService {
         headset: @escaping @MainActor () -> HeadsetInsightsSnapshot,
         settings: UserDefaults = .standard,
         tick: Duration = .seconds(5),
-        sleep: @escaping @Sendable (Duration) async -> Void = { duration in _ = try? await Task.sleep(for: duration) },
+        sleep: @escaping @Sendable (Duration) async -> Void = { duration in _ = try? await Pause.sleep(duration) },
         now: @escaping @Sendable () -> Date = Date.init
     ) {
         self.store = store
@@ -134,7 +134,7 @@ public final class InsightsService {
     /// `sleep` is the timeout clock (injectable); a cancelled sleep ends early.
     public func stop(
         timeout: Duration,
-        sleep: @escaping @Sendable (Duration) async -> Void = { duration in _ = try? await Task.sleep(for: duration) }
+        sleep: @escaping @Sendable (Duration) async -> Void = { duration in _ = try? await Pause.sleep(duration) }
     ) async -> Bool {
         let before = pendingCounts
         Self.quitLog.notice("insights stop: begin (recording=\(self.isRecording, privacy: .public), pending activity=\(before.activity, privacy: .public) noise=\(before.noise, privacy: .public) battery=\(before.battery, privacy: .public))")
