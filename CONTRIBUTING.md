@@ -14,7 +14,7 @@ Please be kind and assume good faith in every discussion.
 3. **macOS 14 and 15.** Only macOS 26 on Apple silicon has been used so far. Reports from Sonoma and Sequoia
    are valuable (Insights needs 14.2 or later).
 4. **Gen2 equalizer writing** for firmware 3.16.4 and later. It needs someone with such firmware and
-   patience; see the Gen2 equalizer issue in the [issue tracker](https://github.com/onlyilkr/sennsei/issues).
+   patience; see the Gen2 equalizer [issue #1](https://github.com/onlyilkr/sennsei/issues/1).
 
 ## Getting set up
 

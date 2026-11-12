@@ -13,16 +13,6 @@
 brew install --cask onlyilkr/tap/sennsei
 ```
 
-<sub>Available once the first release is published; until then see [Install](#install).</sub>
-
-<p align="center">
-  <a href="https://github.com/onlyilkr/sennsei/actions/workflows/ci.yml"><img src="https://github.com/onlyilkr/sennsei/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/onlyilkr/sennsei/releases"><img src="https://img.shields.io/github/v/release/onlyilkr/sennsei" alt="Release"></a>
-  <img src="https://img.shields.io/badge/macOS-14%2B-lightgrey" alt="macOS 14 or later">
-  <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/onlyilkr/sennsei" alt="MIT license"></a>
-</p>
-
 > [!IMPORTANT]
 > **Unofficial. Not affiliated with, endorsed by or supported by Sennheiser or Sonova.** The Sennheiser and
 > ACCENTUM names are used only to identify the compatible product. The icon and logo are original.
@@ -31,7 +21,7 @@ brew install --cask onlyilkr/tap/sennsei
 > (see [Credits](#credits)), and contains no code, files or data from the official app.
 
 <p align="center">
-  <img src="docs/images/panel.png" width="360" alt="The Sennsei panel under the menu bar icon: connected, battery 80 percent; noise control with ANC selected and a switch to pause music in Transparency; three scenes, Focus, Meeting and Travel, with Focus active, and the automatic scenes switch off; equalizer presets Rock, Pop, Dance, Hip-Hop, Classical, Movie, Jazz and Flat with Flat selected; buttons for Shortcuts, Insights and Quit.">
+  <img src="docs/images/hero.png" width="100%" alt="Sennsei hero image. Along the top, a macOS menu bar with the Sennsei item (headphones and 80 percent) highlighted, and the Sennsei panel hanging directly below it: connected, noise control with ANC selected, three scenes with Focus active, and equalizer presets with Flat selected. To the left of the panel, the Insights window showing 20 hours 30 minutes of listening and 35 minutes of calls in a week, listening per app and the noise control share. At the far left, the Sennsei icon, the name and the line Headphone control, right in the menu bar.">
 </p>
 
 <sub>The images in this README are generated from sample data (`make preview`). The switch, segmented picker
@@ -101,7 +91,7 @@ macOS grants the Bluetooth permission to an app, not to a shell.
 
 Sennsei needs **macOS 14 (Sonoma) or later**. It has been verified only on macOS 26 on Apple silicon.
 
-**Homebrew** (becomes available with the first release; it is not published yet):
+**Homebrew**:
 
 ```sh
 brew install --cask onlyilkr/tap/sennsei
@@ -153,6 +143,10 @@ Renamed headphones, or none at hand? See *The headphones have another name* and 
 
 Click the menu bar icon.
 
+<p align="center">
+  <img src="docs/images/panel.png" width="360" alt="The Sennsei panel under the menu bar icon: connected, battery 80 percent; noise control with ANC selected and a switch to pause music in Transparency; three scenes, Focus, Meeting and Travel, with Focus active, and the automatic scenes switch off; equalizer presets Rock, Pop, Dance, Hip-Hop, Classical, Movie, Jazz and Flat with Flat selected; buttons for Shortcuts, Insights and Quit.">
+</p>
+
 - **Header**: connection state and battery.
 - **Noise control**: ANC, Transparency, Off, and the *Pause music in Transparency* switch (the headphones'
   own setting).
@@ -182,7 +176,7 @@ editor yet.
 | --- | --- |
 | below 2.12.0 | not available |
 | 2.12.0 up to, not including, 3.16.4 | works ("Gen1"; verified on 3.12.14) |
-| 3.16.4 and later | **not implemented**: see the Gen2 equalizer issue in the [issue tracker](https://github.com/onlyilkr/sennsei/issues) |
+| 3.16.4 and later | **not implemented**: see the Gen2 equalizer [issue #1](https://github.com/onlyilkr/sennsei/issues/1) |
 
 The Gen1 equalizer encoding follows protocol facts from the unlicensed xndbogdan/sennheiser-control notes (facts
 only, no code or data copied) and was verified on an ACCENTUM Wireless SE by reading the settings back from the
@@ -407,8 +401,8 @@ Verified on a single pair of headphones means exactly that: other firmware versi
 
 ## Limitations
 
-- **Gen2 equalizer** (firmware 3.16.4 and later) cannot be written yet; see the Gen2 equalizer issue in the
-  [issue tracker](https://github.com/onlyilkr/sennsei/issues).
+- **Gen2 equalizer** (firmware 3.16.4 and later) cannot be written yet; see the Gen2 equalizer
+  [issue #1](https://github.com/onlyilkr/sennsei/issues/1).
 - **Ad-hoc signing, not notarized**: the first launch needs right-click Open, and the Bluetooth permission is
   asked again after every update.
 - **Intel is untested**: the x86_64 slice is built, nothing more is known.
