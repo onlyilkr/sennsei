@@ -108,20 +108,26 @@ enum PreviewRenderer {
     }
 }
 
-/// The repository's hero image (1600x800 points; README at 2x, GitHub social preview at 0.8x): mark, name,
-/// tagline and feature lines on the left, the Insights window (top part) behind and the panel in front.
+/// The repository's hero image (1600x800 points; README at 2x, GitHub social preview at 0.8x): a menu bar strip
+/// with the Sennsei item and the panel hanging from it like a popover, the Insights window (top part) to its
+/// left, and mark, name, tagline and feature lines at the far left.
 private struct HeroImage<Panel: View, Insights: View>: View {
     let panel: Panel
     let insights: Insights
 
     private let graphite = Color(red: 0x0E / 255, green: 0x0F / 255, blue: 0x11 / 255)
+    private let barHeight: CGFloat = 44
+    /// Horizontal centre of the Sennsei item; the panel's notch is centred under it.
+    private let itemCenter: CGFloat = 1330
+    private let panelScale: CGFloat = 1.1
 
     var body: some View {
         ZStack(alignment: .topLeading) {
             graphite
             RadialGradient(
-                colors: [Palette.amber.opacity(0.20), .clear], center: UnitPoint(x: 0.74, y: 0.5),
-                startRadius: 10, endRadius: 640)
+                colors: [Palette.amber.opacity(0.18), .clear], center: UnitPoint(x: 0.62, y: 0.55),
+                startRadius: 10, endRadius: 520)
+
             VStack(alignment: .leading, spacing: 20) {
                 AppMark(size: 120)
                 Text("Sennsei")
@@ -143,30 +149,82 @@ private struct HeroImage<Panel: View, Insights: View>: View {
                 }
                 .padding(.top, 4)
             }
-            .padding(.leading, 80)
-            .padding(.top, 96)
+            .padding(.leading, 72)
+            .padding(.top, 118)
 
-            // Insights: only the top part (header, totals, by-app chart, noise share), behind the panel.
+            // Insights: only the top part (header, totals, by-app chart, noise share).
             insights
                 .fixedSize()
-                .frame(width: 520, height: 755, alignment: .top)
+                .frame(width: 520, height: 742, alignment: .top)
                 .clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(Color.white.opacity(0.10), lineWidth: 1))
                 .shadow(color: .black.opacity(0.5), radius: 22, y: 10)
-                .scaleEffect(0.94, anchor: .topLeading)
-                .offset(x: 987, y: 44)
+                .scaleEffect(0.92, anchor: .topLeading)
+                .offset(x: 628, y: 76)
+
+            // The panel, hanging from the menu bar item like a popover.
             panel
                 .fixedSize()
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Color.white.opacity(0.12), lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Color.white.opacity(0.14), lineWidth: 1))
                 .shadow(color: .black.opacity(0.6), radius: 28, y: 14)
-                .scaleEffect(1.06, anchor: .topLeading)
-                .offset(x: 668, y: 236)
+                .scaleEffect(panelScale, anchor: .topLeading)
+                .offset(x: itemCenter - 320 * panelScale / 2, y: barHeight + 8)
+            Notch()
+                .fill(Palette.ground)
+                .overlay(Notch().stroke(Color.white.opacity(0.14), lineWidth: 1))
+                .frame(width: 26, height: 11)
+                .offset(x: itemCenter - 13, y: barHeight - 3)
+            // Hide the notch's own outline where it joins the panel.
+            Palette.ground.frame(width: 20, height: 3).offset(x: itemCenter - 10, y: barHeight + 7)
+
+            menuBar
         }
         .frame(width: 1600, height: 800, alignment: .topLeading)
         .clipped()
         .environment(\.colorScheme, .dark)
+    }
+
+    private var menuBar: some View {
+        let glyph = MenuBarGlyph.image(symbolName: "headphones", text: "\(PreviewSamples.batteryPercent)%")
+        let scale: CGFloat = 1.5
+        return ZStack(alignment: .topLeading) {
+            Color(red: 0x1D / 255, green: 0x1F / 255, blue: 0x23 / 255)
+            Rectangle().fill(Color.white.opacity(0.09)).frame(height: 1).offset(y: barHeight - 1)
+            // The item as it looks while its panel is open: highlighted pill, template glyph drawn white.
+            let width = glyph.size.width * scale + 28
+            RoundedRectangle(cornerRadius: 9, style: .continuous)
+                .fill(Color.white.opacity(0.20))
+                .frame(width: width, height: 32)
+                .offset(x: itemCenter - width / 2, y: 6)
+            Image(nsImage: glyph)
+                .renderingMode(.template)
+                .resizable()
+                .interpolation(.high)
+                .foregroundStyle(Color.white)
+                .frame(width: glyph.size.width * scale, height: glyph.size.height * scale)
+                .offset(x: itemCenter - glyph.size.width * scale / 2, y: (barHeight - glyph.size.height * scale) / 2)
+            HStack(spacing: 18) {
+                Image(systemName: "wifi").font(.system(size: 17, weight: .medium))
+                Image(systemName: "battery.100percent").font(.system(size: 19, weight: .regular))
+                Text("Thu 9:41").font(.system(size: 17, weight: .medium))
+            }
+            .foregroundStyle(Color.white.opacity(0.92))
+            .frame(height: barHeight)
+            .offset(x: itemCenter + (glyph.size.width * scale + 28) / 2 + 22)
+        }
+        .frame(width: 1600, height: barHeight, alignment: .topLeading)
+    }
+}
+
+private struct Notch: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        return path
     }
 }
 

@@ -31,7 +31,7 @@ brew install --cask onlyilkr/tap/sennsei
 > (see [Credits](#credits)), and contains no code, files or data from the official app.
 
 <p align="center">
-  <img src="docs/images/hero.png" width="100%" alt="Sennsei: the menu bar panel in front of the Insights window. The panel shows the headphones connected at 80 percent battery with noise control, scenes and equalizer presets; behind it Insights shows 20 hours 30 minutes of listening and 35 minutes of calls in a week, listening per app and the noise control share. Beside them: the Sennsei icon and the line Headphone control, right in the menu bar.">
+  <img src="docs/images/hero.png" width="100%" alt="Sennsei hero image. Along the top, a macOS menu bar with the Sennsei item (headphones and 80 percent) highlighted, and the Sennsei panel hanging directly below it: connected, noise control with ANC selected, three scenes with Focus active, and equalizer presets with Flat selected. To the left of the panel, the Insights window showing 20 hours 30 minutes of listening and 35 minutes of calls in a week, listening per app and the noise control share. At the far left, the Sennsei icon, the name and the line Headphone control, right in the menu bar.">
 </p>
 
 <sub>The images in this README are generated from sample data (`make preview`). The switch, segmented picker
