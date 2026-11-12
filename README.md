@@ -15,14 +15,6 @@ brew install --cask onlyilkr/tap/sennsei
 
 <sub>Available once the first release is published; until then see [Install](#install).</sub>
 
-<p align="center">
-  <a href="https://github.com/onlyilkr/sennsei/actions/workflows/ci.yml"><img src="https://github.com/onlyilkr/sennsei/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/onlyilkr/sennsei/releases"><img src="https://img.shields.io/github/v/release/onlyilkr/sennsei" alt="Release"></a>
-  <img src="https://img.shields.io/badge/macOS-14%2B-lightgrey" alt="macOS 14 or later">
-  <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/onlyilkr/sennsei" alt="MIT license"></a>
-</p>
-
 > [!IMPORTANT]
 > **Unofficial. Not affiliated with, endorsed by or supported by Sennheiser or Sonova.** The Sennheiser and
 > ACCENTUM names are used only to identify the compatible product. The icon and logo are original.
